@@ -1,29 +1,30 @@
 const fs = require("fs")
-const getNotes = function () {
+const chalk = require("chalk")
+const getNotes = () => {
     return "Your notes..."
 }
-const addNotes = function (title, body) {
+const addNotes = (title, body) => {
     notes = loadNotes()
-    const duplicateNotes = notes.filter(note => note.title === title)
-    if (duplicateNotes.length === 0) {
+    const duplicateNotes = notes.find(note => note.title === title)
+    if (!duplicateNotes) {
         notes.push({
             title: title,
             body: body
         })
         saveNotes(notes)
-        console.log("new notes added")
+        console.log(chalk.green.inverse("new notes added"))
     } else {
-        console.log("Title not identical")
+        console.log(chalk.red.inverse("Title not identical"))
 
     }
 
 }
 
-const saveNotes = function (notes) {
+const saveNotes = (notes) => {
     const note = JSON.stringify(notes)
     fs.writeFileSync("notes.json", note)
 }
-const loadNotes = function () {
+const loadNotes = () => {
     try {
         const noteBuffer = fs.readFileSync("notes.json")
         const note = JSON.parse(noteBuffer.toString())
@@ -42,9 +43,9 @@ const removeNotes = (title) => {
         const index = notes.findIndex(p => p.title === title)
         const note = notes.splice(index, 1)
         removeTitle(notes)
-        console.log("Notes Removed")
+        console.log(chalk.green.inverse("Note Removed!"))
     } else {
-        console.log("No title to delete")
+        console.log(chalk.red.inverse("No Note Found!"))
     }
 
 }
@@ -52,9 +53,31 @@ const removeTitle = (notes) => {
     const note = JSON.stringify(notes)
     fs.writeFileSync("notes.json", note)
 }
+const listNotes = () => {
+    notes = loadNotes()
+    console.log(chalk.white.inverse("Your notes "))
+    notes.forEach(element => {
+        console.log(element.title)
+
+    });
+
+}
+const readNotes = (title) => {
+    notes = loadNotes()
+    const read = notes.find(n => n.title === title)
+    if (read) {
+        console.log("Title: " + chalk.green(read.title))
+        console.log("Body: " + read.body)
+    } else {
+        console.log(chalk.red("Error!"))
+    }
+
+}
 module.exports = {
     getNotes: getNotes,
     addNotes: addNotes,
-    removeNotes: removeNotes
+    removeNotes: removeNotes,
+    listNotes: listNotes,
+    readNotes: readNotes
 
 }
