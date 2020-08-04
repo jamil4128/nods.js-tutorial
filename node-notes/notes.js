@@ -35,8 +35,26 @@ const loadNotes = function () {
     }
 
 }
+const removeNotes = (title) => {
+    notes = loadNotes()
+    const removed = notes.filter(note => note.title === title)
+    if (removed.length) {
+        const index = notes.findIndex(p => p.title === title)
+        const note = notes.splice(index, 1)
+        removeTitle(notes)
+        console.log("Notes Removed")
+    } else {
+        console.log("No title to delete")
+    }
+
+}
+const removeTitle = (notes) => {
+    const note = JSON.stringify(notes)
+    fs.writeFileSync("notes.json", note)
+}
 module.exports = {
     getNotes: getNotes,
-    addNotes: addNotes
+    addNotes: addNotes,
+    removeNotes: removeNotes
 
 }

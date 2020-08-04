@@ -57,8 +57,15 @@ yargs.command({
 yargs.command({
     command: "remove",
     describe: "remove a new note",
-    handler: function () {
-        console.log("Inside function of removing a new commands")
+    builder: {
+        title: {
+            describe: "Remove Title",
+            demandOption: true,
+            type: "string"
+        }
+    },
+    handler: function (argv) {
+        notes.removeNotes(argv.title)
     }
 })
 //create read command
