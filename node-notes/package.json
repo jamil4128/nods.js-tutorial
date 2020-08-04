@@ -1,0 +1,17 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "Practicing node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jamil",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.0.27",
+    "chalk": "^4.1.0",
+    "validator": "^13.1.1",
+    "yargs": "^15.4.1"
+  }
+}
