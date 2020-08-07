@@ -25,23 +25,25 @@
 //Geocoding
 
 const request = require("request")
-const geocodeurl = "https://api.mapbox.com/geocoding/v5/mapbox.places/dhaka.json?access_token=pk.eyJ1IjoiamFtaWwtMzQiLCJhIjoiY2tkZ2l6NW1sMml2NjJ4cG1zdWIya3JrOCJ9.u-WRzzHsbUwKGA74KTCX3A&limit=1"
+const geocode = require("./utils/geocode")
+const forecast = require("./utils/forecast")
+const address = process.argv[2]
+if (!address) {
+    console.log("provide an address")
+} else {
+    geocode(address, (error, { location }) => {
+        if (error) {
+            return console.log("Error: ", error)
+        }
+        forecast(location, (error, { temperature, pressure, prediction }) => {
+            if (error) {
+                return console.log("Error: ", error)
+            }
+            console.log(location)
+            console.log("Its " + temperature + " degree celcius and there is " + pressure + " atmospheric pressure. And " + prediction)
+        })
+    })
 
-request({ url: geocodeurl, json: true }, (error, response) => {
-    if (error) {
-        console.log("Unable to connect to server")
-    }
-    else if (response.body.message) {
-        console.log("Check your spelling")
-    } else if (response.body.features.length === 0) {
-        console.log("Unable to find location. Try another Search")
-    }
-    else {
-        const latitude = response.body.features[0].center[0]
-        const langtitude = response.body.features[0].center[1]
-        //console.log("latitude: " + response.features[0].center[1])
-        console.log("latitude: ", latitude)
-        console.log("langtitude: ", langtitude)
-    }
 
-})
+}
+
