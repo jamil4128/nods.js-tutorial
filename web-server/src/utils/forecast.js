@@ -6,12 +6,15 @@ const forecast = (address, callback) => {
         if (error) {
             callback("Unable to connect", undefined)
         } else if (body.connect) {
-            callback("Internal Error", undefined)
+            callback("Internal Error", {})
+        } else if (body.current == undefined) {
+            callback("Undefined", {})
         } else {
             callback(undefined, {
                 temperature: body.current.temperature,
                 pressure: body.current.pressure,
                 prediction: body.current.weather_descriptions[0]
+
             })
         }
     })
