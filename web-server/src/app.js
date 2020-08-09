@@ -2,6 +2,8 @@ const path = require("path")
 const express = require("express")
 const app = express()
 const hbs=require("hbs")
+const forecast=require("./utils/forecast")
+const geocode=require("./utils/geocode")
 // console.log(__dirname)
 // console.log(path.join(__dirname, "../public"))
 
@@ -42,9 +44,47 @@ app.get("/help",(req,res)=>{
 })
 
 app.get("/weather", (req, res) => {
+    const address=req.query.address
+    if(!address){
+        return res.send({
+            error:"You must enter an address"
+        })
+    }
+    geocode(address,(error,{location}={})=>{
+        if(error){
+            return res.send({
+                error:error
+            })
+        }
+        forecast(location,(error,{temperature,pressure,prediction})=>{
+            if(error){
+                return res.send({
+                    error:error
+                })
+            }
+            // res.send("<div><h1>I am at "+location+".</h1><p>Its " + temperature + " degree celcius and there is " + pressure + " atmospheric pressure. And " + prediction+"</p></div>")
+            const weatherPredict="Its currently "+ temperature + " degree celcius and a pressure of" + pressure + " atmosphere. And prediction is " + prediction+"."
+            res.send({
+                location:location,
+                address:address,
+                forecast:weatherPredict
+            })
+        })
+
+    })
+
+
+    
+    
+})
+app.get("/products",(req,res)=>{
+    if(!req.query.search){
+        return res.send({
+            error:"Please Enter a search"
+        })
+    }
     res.send({
-        forecast: "It is showing",
-        location: "Dhaka"
+        products:[]
     })
 })
 app.get("/help/*",(req,res)=>{
