@@ -4,6 +4,7 @@ const app = express()
 const hbs = require("hbs")
 const forecast = require("./utils/forecast")
 const geocode = require("./utils/geocode")
+const port=process.env.PORT || 3005
 // console.log(__dirname)
 // console.log(path.join(__dirname, "../public"))
 
@@ -103,6 +104,6 @@ app.get("*", (req, res) => {
 
 })
 
-app.listen(3005, () => {
-    console.log("Listening to port 3005")
+app.listen(port, () => {
+    console.log("Listening to port "+port)
 })
