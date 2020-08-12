@@ -4,7 +4,8 @@
   "description": "web sever",
   "main": "app.js",
   "scripts": {
-    "start": "node src/app.js -e js,hbs"
+    "start": "npm run starts",
+    "starts": "nodemon src/app.js -e js,hbs"
   },
   "author": "Jamil ahmed",
   "license": "ISC",
